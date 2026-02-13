@@ -1,0 +1,18 @@
+# Node
+node_modules/
+Client/node_modules/
+Server/node_modules/
+
+# Env files
+.env
+
+# Logs
+*.log
+
+# Mac
+.DS_Store
+
+# Build
+dist/
+build/
+coverage/
