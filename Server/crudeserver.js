@@ -11,17 +11,18 @@ const users = [{id:1,name:"John",email:"John.gmail.com"},
 const server = http.createServer((req,res)=>{
     const url = req.url; 
 
-    if(url=="/" && req.method=="GET"){
+    if(url=="/" && req.method=="GET"){ // Simple Home Page Route
         res.end("<h1> Home Page </h1>");
     }
 
-    else if(url=="/users" && req.method=="GET"){
+    else if(url=="/users" && req.method=="GET"){ // Route to Get All Users
         res.end(JSON.stringify(users));
     }
 
-    else if(url.startsWith("/users/") && req.method=="GET"){
+    else if(url.startsWith("/users/") && req.method=="GET"){ // Route to Get User by ID
         const id = parseInt(url.split("/")[2]);
-        const user = users.find(u => u.id === id); //Not use filter because it returns an empty array when no condition match and we want to return null when no user found
+        const user = users.find(u => u.id === id); // Not use Filter Function because it returns an empty array when no condition matches. 
+        // Find Function returns undefined when no condition matches, which is easier to Handle in this Case.
         if(!user) {
             res.statusCode = 400;
             console.log(`User with id ${id} not found`);
@@ -30,7 +31,7 @@ const server = http.createServer((req,res)=>{
         res.end("<h1> User Details </h1>" + JSON.stringify(user));
     }
 
-    else if(url=="/createuser" && req.method=="POST"){
+    else if(url=="/createuser" && req.method=="POST"){ // Route to Create a New User
         let body = "";
         req.on("data",(chunk)=>{
             body += chunk;
@@ -48,11 +49,11 @@ const server = http.createServer((req,res)=>{
         })
     }
 
-    else if(url.startsWith("/users/") && req.method=="PUT"){
-        res.end("<h1> Update User Page </h1>");
+    else if(url.startsWith("/users/") && req.method=="PUT"){ // Route to Update User by ID
+        res.end("<h1> Update User Page </h1>"); 
     }
 
-    else if(url.startsWith("/users/") && req.method=="DELETE"){
+    else if(url.startsWith("/users/") && req.method=="DELETE"){ // Route to Delete User by ID
         const id = parseInt(url.split("/")[2]);
         const userIndex = users.findIndex(u => u.id === id);
         if(userIndex === -1) {
@@ -64,8 +65,8 @@ const server = http.createServer((req,res)=>{
         console.log(`User with id ${id} Deleted Successfully`);
         res.end(`User with id ${id} Deleted Successfully`);
     }
-
-    else {
+ 
+    else { // Route for Handling Undefined Routes
         res.statusCode = 404;
         res.end("Page Not Found");
     }
